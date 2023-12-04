@@ -1,0 +1,40 @@
+* {
+  text-align: center;
+}
+
+body {
+  background-color: rgb(31, 26, 61);
+}
+
+h1 {
+  font-size: 128px;
+  color: aqua;
+}
+
+h3 {
+  font-size: 48px;
+  color: aqua;
+}
+
+.selectorLabel {
+  color: aqua;
+  font-size: 28px;
+}
+
+.category-selector {
+  width: 30%;
+  height: auto;
+  align-self: center;
+  margin-top: 10px;
+}
+
+.selectorFrame {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.categoryButton {
+  width: 70px;
+  align-self: center;
+}
