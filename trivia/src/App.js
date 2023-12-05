@@ -26,9 +26,6 @@ function App() {
     <div className="App">
       <h1 className="title">Welcome to Trivia!</h1>
       <h3 className="title">To begin, select a category and press start.</h3>
-      <div className='categoryList'>
-      
-      </div>
       <div className='selectorFrame'>
         <label for="category-selector" className='selectorLabel'>Please choose your Trivia Category:<br></br></label>
         <select className='category-selector'>
