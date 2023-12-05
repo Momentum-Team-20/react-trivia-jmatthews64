@@ -5,8 +5,9 @@ import './App.css';
 function App() {
   const [cats, setCats] = useState([])
   const [loading, setLoading] = useState(true)
-  const [selectedID, setSelectedID] = useState('')
-  
+  const [selectedID, setSelectedID] = useState(0)
+  const [selectedValue, setSelectedValue] = useState('')
+  const [startGame, setStartGame] = useState(false)
 
   useEffect(() => {
     axios
@@ -23,10 +24,33 @@ function App() {
     )
   }
 
+  // To handle the change when a specific item is selected from the dropdown and get the id
   const handleChange = (event) => {
-    const selectedValue = event.target.value;
-    setSelectedID(selectedValue);
+    const selectValue = event.target.value
+    setSelectedValue(selectValue)
+    const findSelectedObject = cats.find((cat) => cat.name === selectValue)
+    if (findSelectedObject) {
+      const selectedObjKey = findSelectedObject.id
+      setSelectedID(parseInt(selectedObjKey))
+    }
   } 
+
+  const handleClick = () => {
+    if (!selectedID) {
+      alert('Please select a category!')
+    } else {
+      setStartGame(true)
+    }
+  }
+
+  if (startGame) {
+    return (
+      <h1>Game Started!</h1>
+      // <GameDetails
+      //   selectedID={selectedID}
+      // />
+    )
+  }
 
   return (
     <div className="App">
@@ -41,7 +65,7 @@ function App() {
           ))}
         </select>
         <br></br>
-        <button for='category-selector' className="categoryButton">Submit</button>
+        <button for='category-selector' className="categoryButton" onClick={handleClick}>Submit</button>
       </div>
     </div>
   );
