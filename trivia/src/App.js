@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import axios from 'axios'
 import './App.css';
+import GameDetails from './components/GameDetails'
 
 function App() {
   const [cats, setCats] = useState([])
@@ -45,10 +46,10 @@ function App() {
 
   if (startGame) {
     return (
-      <h1>Game Started!</h1>
-      // <GameDetails
-      //   selectedID={selectedID}
-      // />
+      <GameDetails
+        selectedValue={selectedValue}
+        selectedID={selectedID}
+      />
     )
   }
 
@@ -61,11 +62,11 @@ function App() {
         <select className='category-selector' onChange={handleChange}>
           <option value=''>---Please Select a Category---</option>
           {cats.map((cat) => (
-          <option value={cat.key}>{cat.name}</option>
+          <option value={cat.name}>{cat.name}</option>
           ))}
         </select>
         <br></br>
-        <button for='category-selector' className="categoryButton" onClick={handleClick}>Submit</button>
+        <button for='category-selector' className="categoryButton" onClick={handleClick}>Start Quiz!</button>
       </div>
     </div>
   );

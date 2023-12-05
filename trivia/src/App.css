@@ -35,6 +35,10 @@ h3 {
 }
 
 .categoryButton {
-  width: 70px;
+  width: 100px;
   align-self: center;
+}
+
+p {
+  color: aqua;
 }
