@@ -5,9 +5,10 @@ import './App.css';
 function App() {
   const [cats, setCats] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectedID, setSelectedID] = useState('')
+  
 
   useEffect(() => {
-    console.log("useFX is running")
     axios
       .get('https://opentdb.com/api_category.php')
       .then((categories) => {
@@ -22,20 +23,22 @@ function App() {
     )
   }
 
+  const handleChange = (event) => {
+    const selectedValue = event.target.value;
+    setSelectedID(selectedValue);
+  } 
+
   return (
     <div className="App">
       <h1 className="title">Welcome to Trivia!</h1>
       <h3 className="title">To begin, select a category and press start.</h3>
       <div className='selectorFrame'>
         <label for="category-selector" className='selectorLabel'>Please choose your Trivia Category:<br></br></label>
-        <select className='category-selector'>
-          <option value="">---Please Select a Category---</option>
+        <select className='category-selector' onChange={handleChange}>
+          <option value=''>---Please Select a Category---</option>
           {cats.map((cat) => (
-        <Category 
-          key={cat.id}
-          name={cat.name}
-        />
-      ))}
+          <option value={cat.key}>{cat.name}</option>
+          ))}
         </select>
         <br></br>
         <button for='category-selector' className="categoryButton">Submit</button>
@@ -44,10 +47,5 @@ function App() {
   );
 }
 
-function Category(props) {
-  return (
-    <option value={props.key}>{props.name}</option>
-  )
-}
 
 export default App;
