@@ -4,13 +4,23 @@ import './App.css';
 
 function App() {
   const [cats, setCats] = useState([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     console.log("useFX is running")
     axios
       .get('https://opentdb.com/api_category.php')
-      .then((categories) => setCats(categories.data.trivia_categories))
-  }, [])
+      .then((categories) => {
+        setLoading(false)
+        setCats(categories.data.trivia_categories)})
+      }
+  , [])
+
+  if (loading) {
+    return (
+      <h1 className='loadingScreen'>Loading...</h1>
+    )
+  }
 
   return (
     <div className="App">
