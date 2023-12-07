@@ -42,3 +42,9 @@ h3 {
 p {
   color: aqua;
 }
+
+.radioInput {
+  display: flex;
+  flex-direction: column;
+  color: aqua;
+}

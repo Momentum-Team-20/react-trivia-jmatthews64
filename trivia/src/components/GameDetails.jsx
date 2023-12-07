@@ -11,6 +11,7 @@ const GameDetails = ({
     const [index, setIndex] = useState(0)
     const [loading, setLoading] = useState(true)
     const [isAnswered, setIsAnswered] = useState(false)
+    const [endQuiz, setEndQuiz] = useState(false)
 
     useEffect(() => {
         const categoryURL = 'https://placeholder-trivia-api.glitch.me/questions'
@@ -28,21 +29,33 @@ const GameDetails = ({
         setIsAnswered(true)
     }
 
-    const nextQuestion = (event) => {
-        setIndex(index + 1)
-        setIsAnswered(false)
-    }
 
     const resetGame = (event) => {
         setStartGame(false)
     }
-
+    
+    
     if(isAnswered) {
         return (
             <div>
                 <h3>The correct answer is: </h3>
                 <p>{repos[index].correct_answer}</p>
-                <button onClick={nextQuestion}>Next Question</button>
+                <FinalQuestion
+                    index={index}
+                    length={repos.length}
+                    setIndex={setIndex}
+                    setEndQuiz={setEndQuiz}
+                    setIsAnswered={setIsAnswered}
+                    />
+            </div>
+        )
+    }
+    
+    if(endQuiz) {
+        return(
+            <div>
+                <h3>End of Quiz</h3>
+                <button onClick={resetGame}>Return Home</button>
             </div>
         )
     }
@@ -52,28 +65,43 @@ const GameDetails = ({
             <h3>Welcome to the {selectedValue} quiz!</h3>
             <p>Question #{index + 1}: </p>
             <p>{repos[index].question}</p>
-            <p>{repos[index].correct_answer}</p>
+            <div className='radioInput'>
+            <label>
+                <input type='radio' value={repos[index].correct_answer}></input>
+                {repos[index].correct_answer}
+            </label>
             {repos[index].incorrect_answers.map((answer) => (
-                <p>{answer}</p>
+                <label>
+                    <input type='radio' value={answer}></input>
+                    {answer}
+                </label>
             ))}
+            </div>
             <button onClick={handleClick}>Submit</button>
             <br></br>
-            <button onClick={resetGame}>Restart Quiz</button>
+            <button onClick={resetGame}>Return Home</button>
         </div>
     )
 }
 
 //Create a function to display each question with multiple choice answers
 
-const Question = (
-    question,
-    correct_answer
-) => {
-    return (
-        <div>
-            <p>{question}</p>
-            <p>{correct_answer}</p>
-        </div>
-)}
+const FinalQuestion = ({index, length, setIndex, setEndQuiz, setIsAnswered}) => {
+    const nextQuestion = (event) => {
+        setIndex(index + 1)
+        setIsAnswered(false)
+    }
+
+    const seeScore = (event) => {
+        setEndQuiz(true)
+        setIsAnswered(false)
+    }
+
+    if(index === length - 1) {
+        return (<button onClick={seeScore}>See Score</button>)
+    } else {
+        return (<button onClick={nextQuestion}>Next Question</button>)
+    }
+}
 
 export default GameDetails
