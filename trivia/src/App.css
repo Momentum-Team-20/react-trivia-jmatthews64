@@ -43,7 +43,7 @@ p {
   color: aqua;
 }
 
-.radioInput {
+form {
   display: flex;
   flex-direction: column;
   color: aqua;

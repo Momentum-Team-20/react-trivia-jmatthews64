@@ -66,18 +66,20 @@ const GameDetails = ({
             <p>Question #{index + 1}: </p>
             <p>{repos[index].question}</p>
             <div className='radioInput'>
-            <label>
-                <input type='radio' value={repos[index].correct_answer}></input>
-                {repos[index].correct_answer}
-            </label>
-            {repos[index].incorrect_answers.map((answer) => (
-                <label>
-                    <input type='radio' value={answer}></input>
-                    {answer}
-                </label>
-            ))}
+                <form>
+                    <label>
+                        <input type='radio'name='answer' value={repos[index].correct_answer}></input>
+                        {repos[index].correct_answer}
+                    </label>
+                    {repos[index].incorrect_answers.map((answer) => (
+                        <label>
+                            <input type='radio' name='answer' value={answer}></input>
+                            {answer}
+                        </label>
+                    ))}
+                </form>
             </div>
-            <button onClick={handleClick}>Submit</button>
+            <button className='submitAnswer' onClick={handleClick}>Submit</button>
             <br></br>
             <button onClick={resetGame}>Return Home</button>
         </div>
