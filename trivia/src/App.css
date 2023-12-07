@@ -49,8 +49,10 @@ form {
   color: aqua;
 }
 
-.answerLabel {
-  display: flex;
-  flex-direction: row;
-  padding-left: 33%;
+.right {
+  color: green;
+}
+
+.wrong {
+  color: red;
 }

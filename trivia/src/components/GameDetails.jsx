@@ -13,7 +13,6 @@ const GameDetails = ({
     const [isAnswered, setIsAnswered] = useState(false)
     const [endQuiz, setEndQuiz] = useState(false)
     const [chosenAnswer, setChosenAnswer] = useState('')
-    const renderHTML = (escapedHTML: string) => React.createElement("div", { dangerouslySetInnerHTML: { __html: escapedHTML } });
 
     useEffect(() => {
         const categoryURL = 'https://placeholder-trivia-api.glitch.me/questions'
@@ -39,13 +38,18 @@ const GameDetails = ({
     const recordAnswer = (event) => {
         const answer = event.target.value
         setChosenAnswer(answer)
+        console.log(answer)
     }
     
     
     if(isAnswered) {
         return (
             <div>
-                <h3>The correct answer is: </h3>
+                <Answer
+                    chosenAnswer={chosenAnswer}
+                    correct_answer={repos[index].correct_answer}
+                />
+                <h3>The answer is: </h3>
                 <p>{repos[index].correct_answer}</p>
                 <FinalQuestion
                     index={index}
@@ -71,17 +75,17 @@ const GameDetails = ({
         <div className="GameDetails">
             <h3>Welcome to the {selectedValue} quiz!</h3>
             <p>Question #{index + 1}: </p>
-            <p>{renderHTML(repos[index].question)}</p>
+            <p>{repos[index].question}</p>
             <div className='radioInput'>
                 <form onChange={recordAnswer}>
                     <label className='answerLabel'>
-                        <input type='radio'name='answer' value={renderHTML(repos[index].correct_answer)}></input>
-                        {renderHTML(repos[index].correct_answer)}
+                        <input type='radio'name='answer' value={repos[index].correct_answer}></input>
+                        {repos[index].correct_answer}
                     </label>
                     {repos[index].incorrect_answers.map((answer) => (
-                        <label className='answerLabel'>
-                            <input type='radio' name='answer' value={renderHTML(answer)}></input>
-                            {renderHTML(answer)}
+                        <label>
+                            <input type='radio' name='answer' value={answer}></input>
+                            {answer}
                         </label>
                     ))}
                 </form>
@@ -110,6 +114,14 @@ const FinalQuestion = ({index, length, setIndex, setEndQuiz, setIsAnswered}) => 
         return (<button onClick={seeScore}>See Score</button>)
     } else {
         return (<button onClick={nextQuestion}>Next Question</button>)
+    }
+}
+
+const Answer = ({chosenAnswer, correct_answer}) => {
+    if(chosenAnswer === correct_answer) {
+        return (<h3 className="right">You are correct!</h3>)
+    } else {
+        return (<h3 className='wrong'>You are incorrect</h3>)
     }
 }
 
