@@ -49,6 +49,8 @@ function App() {
       <GameDetails
         selectedValue={selectedValue}
         selectedID={selectedID}
+        startGame={startGame}
+        setStartGame={setStartGame}
       />
     )
   }
