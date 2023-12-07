@@ -13,6 +13,7 @@ const GameDetails = ({
     const [isAnswered, setIsAnswered] = useState(false)
     const [endQuiz, setEndQuiz] = useState(false)
     const [chosenAnswer, setChosenAnswer] = useState('')
+    const [score, setScore] = useState(0)
 
     useEffect(() => {
         const categoryURL = 'https://placeholder-trivia-api.glitch.me/questions'
@@ -38,7 +39,9 @@ const GameDetails = ({
     const recordAnswer = (event) => {
         const answer = event.target.value
         setChosenAnswer(answer)
-        console.log(answer)
+        if(answer === repos[index].correct_answer) {
+            setScore(score + 1)
+        }
     }
     
     
@@ -49,6 +52,7 @@ const GameDetails = ({
                     chosenAnswer={chosenAnswer}
                     correct_answer={repos[index].correct_answer}
                 />
+                <p>Your current score is {score}</p>
                 <h3>The answer is: </h3>
                 <p>{repos[index].correct_answer}</p>
                 <FinalQuestion
@@ -66,6 +70,7 @@ const GameDetails = ({
         return(
             <div>
                 <h3>End of Quiz</h3>
+                <h3>Your final score is {score}</h3>
                 <button onClick={resetGame}>Return Home</button>
             </div>
         )
@@ -117,7 +122,7 @@ const FinalQuestion = ({index, length, setIndex, setEndQuiz, setIsAnswered}) => 
     }
 }
 
-const Answer = ({chosenAnswer, correct_answer}) => {
+const Answer = ({chosenAnswer, correct_answer, score}) => {
     if(chosenAnswer === correct_answer) {
         return (<h3 className="right">You are correct!</h3>)
     } else {
