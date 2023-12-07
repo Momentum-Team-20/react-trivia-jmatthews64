@@ -48,3 +48,9 @@ form {
   flex-direction: column;
   color: aqua;
 }
+
+.answerLabel {
+  display: flex;
+  flex-direction: row;
+  padding-left: 33%;
+}

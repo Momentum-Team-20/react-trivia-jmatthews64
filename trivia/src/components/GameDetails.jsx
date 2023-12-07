@@ -12,6 +12,8 @@ const GameDetails = ({
     const [loading, setLoading] = useState(true)
     const [isAnswered, setIsAnswered] = useState(false)
     const [endQuiz, setEndQuiz] = useState(false)
+    const [chosenAnswer, setChosenAnswer] = useState('')
+    const renderHTML = (escapedHTML: string) => React.createElement("div", { dangerouslySetInnerHTML: { __html: escapedHTML } });
 
     useEffect(() => {
         const categoryURL = 'https://placeholder-trivia-api.glitch.me/questions'
@@ -32,6 +34,11 @@ const GameDetails = ({
 
     const resetGame = (event) => {
         setStartGame(false)
+    }
+
+    const recordAnswer = (event) => {
+        const answer = event.target.value
+        setChosenAnswer(answer)
     }
     
     
@@ -64,17 +71,17 @@ const GameDetails = ({
         <div className="GameDetails">
             <h3>Welcome to the {selectedValue} quiz!</h3>
             <p>Question #{index + 1}: </p>
-            <p>{repos[index].question}</p>
+            <p>{renderHTML(repos[index].question)}</p>
             <div className='radioInput'>
-                <form>
-                    <label>
-                        <input type='radio'name='answer' value={repos[index].correct_answer}></input>
-                        {repos[index].correct_answer}
+                <form onChange={recordAnswer}>
+                    <label className='answerLabel'>
+                        <input type='radio'name='answer' value={renderHTML(repos[index].correct_answer)}></input>
+                        {renderHTML(repos[index].correct_answer)}
                     </label>
                     {repos[index].incorrect_answers.map((answer) => (
-                        <label>
-                            <input type='radio' name='answer' value={answer}></input>
-                            {answer}
+                        <label className='answerLabel'>
+                            <input type='radio' name='answer' value={renderHTML(answer)}></input>
+                            {renderHTML(answer)}
                         </label>
                     ))}
                 </form>
