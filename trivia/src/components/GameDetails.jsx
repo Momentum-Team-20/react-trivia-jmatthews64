@@ -70,7 +70,7 @@ const GameDetails = ({
         return(
             <div>
                 <h3>End of Quiz</h3>
-                <h3>Your final score is {score}</h3>
+                <h3>You got {score} answers correct!</h3>
                 <button onClick={resetGame}>Return Home</button>
             </div>
         )
