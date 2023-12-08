@@ -1,5 +1,6 @@
 import React, { useEffect, useState} from 'react';
-import axios from 'axios'
+import axios from 'axios';
+
 
 const GameDetails = ({
     selectedValue,
@@ -43,8 +44,22 @@ const GameDetails = ({
             setScore(score + 1)
         }
     }
+
+    //shuffles the array of possible answers
+    const shuffleArray = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    }
+
+    const answers = [repos[index].correct_answer, ...repos[index].incorrect_answers]
+    shuffleArray(answers)
+    console.log(answers)
     
-    
+    //If the question was answered and submitted display whether the user was right and their score.
     if(isAnswered) {
         return (
             <div>
@@ -66,6 +81,7 @@ const GameDetails = ({
         )
     }
     
+    //If you're at the end of the repo, display the final page rather than going back to the main page
     if(endQuiz) {
         return(
             <div>
@@ -76,25 +92,20 @@ const GameDetails = ({
         )
     }
 
+    // Main question display that shows the questions and possible answers
     return (
         <div className="GameDetails">
             <h3>Welcome to the {selectedValue} quiz!</h3>
             <p>Question #{index + 1}: </p>
             <p>{repos[index].question}</p>
-            <div className='radioInput'>
-                <form onChange={recordAnswer}>
-                    <label className='answerLabel'>
-                        <input type='radio'name='answer' value={repos[index].correct_answer}></input>
-                        {repos[index].correct_answer}
+            <form>
+                {answers.map((answer) => (
+                    <label>
+                        <input type='radio' name='answer' value={answer} onChange={recordAnswer}></input>
+                        {answer}
                     </label>
-                    {repos[index].incorrect_answers.map((answer) => (
-                        <label>
-                            <input type='radio' name='answer' value={answer}></input>
-                            {answer}
-                        </label>
-                    ))}
-                </form>
-            </div>
+                ))}
+            </form>
             <button className='submitAnswer' onClick={handleClick}>Submit</button>
             <br></br>
             <button onClick={resetGame}>Return Home</button>
@@ -122,12 +133,13 @@ const FinalQuestion = ({index, length, setIndex, setEndQuiz, setIsAnswered}) => 
     }
 }
 
-const Answer = ({chosenAnswer, correct_answer, score}) => {
+const Answer = ({chosenAnswer, correct_answer}) => {
     if(chosenAnswer === correct_answer) {
         return (<h3 className="right">You are correct!</h3>)
     } else {
         return (<h3 className='wrong'>You are incorrect</h3>)
     }
 }
+
 
 export default GameDetails
