@@ -8,7 +8,6 @@ const GameDetails = ({
     selectedID,
     setStartGame,
     startGame,
-    repos,
     questions,
 }) => {
     const [index, setIndex] = useState(0)
@@ -16,8 +15,6 @@ const GameDetails = ({
     const [endQuiz, setEndQuiz] = useState(false)
     const [chosenAnswer, setChosenAnswer] = useState('')
     const [score, setScore] = useState(0)
-    const [randomAnswers, setRandomAnswers] = useState([])
-    const answers = [repos[index].correct_answer, ...repos[index].incorrect_answers]
 
     const handleClick = (event) => {
         setIsAnswered(true)
@@ -31,40 +28,26 @@ const GameDetails = ({
     const recordAnswer = (event) => {
         const answer = event.target.value
         setChosenAnswer(answer)
-        if(answer === repos[index].correct_answer) {
+        if(answer === questions[index].correctAnswer) {
             setScore(score + 1)
         }
     }
 
-    //shuffles the array of possible answers
-   useEffect (() => {
-    const shuffleArray = (array) => {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            const temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-        }
-    }
-    shuffleArray(answers)
-    setRandomAnswers(answers)
-}, [])
 
-    
     //If the question was answered and submitted display whether the user was right and their score.
     if(isAnswered) {
         return (
             <div>
                 <Answer
                     chosenAnswer={chosenAnswer}
-                    correct_answer={repos[index].correct_answer}
+                    correctAnswer={questions[index].correctAnswer}
                 />
                 <p>Your current score is {score}</p>
                 <h3>The answer is: </h3>
-                <p>{repos[index].correct_answer}</p>
+                <p>{questions[index].correctAnswer}</p>
                 <FinalQuestion
                     index={index}
-                    length={repos.length}
+                    length={questions.length}
                     setIndex={setIndex}
                     setEndQuiz={setEndQuiz}
                     setIsAnswered={setIsAnswered}
@@ -89,9 +72,9 @@ const GameDetails = ({
         <div className="GameDetails">
             <h3>Welcome to the {selectedValue} quiz!</h3>
             <p>Question #{index + 1}: </p>
-            <p>{repos[index].question}</p>
+            <p>{questions[index].question}</p>
             <form>
-                {randomAnswers.map((answer) => (
+                {questions[index].answerChoices.map((answer) => (
                     <label>
                         <input type='radio' name='answer' value={answer} onChange={recordAnswer}></input>
                         {answer}
@@ -125,8 +108,8 @@ const FinalQuestion = ({index, length, setIndex, setEndQuiz, setIsAnswered}) => 
     }
 }
 
-const Answer = ({chosenAnswer, correct_answer}) => {
-    if(chosenAnswer === correct_answer) {
+const Answer = ({chosenAnswer, correctAnswer}) => {
+    if(chosenAnswer === correctAnswer) {
         return (<h3 className="right">You are correct!</h3>)
     } else {
         return (<h3 className='wrong'>You are incorrect</h3>)

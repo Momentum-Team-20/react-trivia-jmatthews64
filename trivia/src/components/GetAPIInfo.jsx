@@ -1,6 +1,8 @@
 import React, { useEffect, useState} from 'react';
 import axios from 'axios';
 import GameDetails from './GameDetails';
+import {shuffle} from 'lodash'
+import he from 'he'
 
 const GetAPIInfo = ({
     selectedValue,
@@ -10,33 +12,30 @@ const GetAPIInfo = ({
 }) => {
     const [repos, setRepos] = useState([])
     const [loading, setLoading] = useState(true)
+    const [questions, setQuestions] = useState([])
 
 
     useEffect(() => {
         const categoryURL = `https://opentdb.com/api.php?amount=10&category=${selectedID}`
         axios.get(categoryURL).then((res) => {
             setLoading(false)
-            setRepos(res.data.results)
+            setQuestions(
+            res.data.results.map((obj) => ({
+                question: he.decode(obj.question),
+                correctAnswer: he.decode(obj.correct_answer),
+                answerChoices: shuffle([
+                    obj.correct_answer,
+                    ...obj.incorrect_answers,
+                ])
+            })))
         })
-    }, [selectedID])
+    }, [])
 
     if(loading) {
         return (<h1>Loading...</h1>)
     }
 
-    //Shuffles the array
-    // const shuffleArray = (array) => {
-    //     for (let i = array.length - 1; i > 0; i--) {
-    //         const j = Math.floor(Math.random() * (i + 1));
-    //         const temp = array[i];
-    //         array[i] = array[j];
-    //         array[j] = temp;
-    //     }
-    // }
-
-    // const answers = [repos[index].correct_answer, ...repos[index].incorrect_answers]
-    // shuffleArray(answers)
-    // console.log(answers)
+    console.log(questions)
 
     return(
     <GameDetails
@@ -44,7 +43,7 @@ const GetAPIInfo = ({
         selectedID={selectedID}
         setStartGame={setStartGame}
         startGame={startGame}
-        repos={repos}
+        questions={questions}
     />
     )
 }
