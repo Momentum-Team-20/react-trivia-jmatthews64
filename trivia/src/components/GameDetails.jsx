@@ -1,32 +1,23 @@
 import React, { useEffect, useState} from 'react';
 import axios from 'axios';
+import GetAPIInfo from './GetAPIInfo';
 
 
 const GameDetails = ({
     selectedValue,
     selectedID,
     setStartGame,
-    startGame
+    startGame,
+    repos,
+    questions,
 }) => {
-    const [repos, setRepos] = useState([])
     const [index, setIndex] = useState(0)
-    const [loading, setLoading] = useState(true)
     const [isAnswered, setIsAnswered] = useState(false)
     const [endQuiz, setEndQuiz] = useState(false)
     const [chosenAnswer, setChosenAnswer] = useState('')
     const [score, setScore] = useState(0)
-
-    useEffect(() => {
-        const categoryURL = 'https://placeholder-trivia-api.glitch.me/questions'
-        axios.get(categoryURL).then((res) => {
-            setLoading(false)
-            setRepos(res.data.results)
-        })
-    }, [])
-
-    if(loading) {
-        return (<h1>Loading...</h1>)
-    }
+    const [randomAnswers, setRandomAnswers] = useState([])
+    const answers = [repos[index].correct_answer, ...repos[index].incorrect_answers]
 
     const handleClick = (event) => {
         setIsAnswered(true)
@@ -46,6 +37,7 @@ const GameDetails = ({
     }
 
     //shuffles the array of possible answers
+   useEffect (() => {
     const shuffleArray = (array) => {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -54,10 +46,10 @@ const GameDetails = ({
             array[j] = temp;
         }
     }
-
-    const answers = [repos[index].correct_answer, ...repos[index].incorrect_answers]
     shuffleArray(answers)
-    console.log(answers)
+    setRandomAnswers(answers)
+}, [])
+
     
     //If the question was answered and submitted display whether the user was right and their score.
     if(isAnswered) {
@@ -99,7 +91,7 @@ const GameDetails = ({
             <p>Question #{index + 1}: </p>
             <p>{repos[index].question}</p>
             <form>
-                {answers.map((answer) => (
+                {randomAnswers.map((answer) => (
                     <label>
                         <input type='radio' name='answer' value={answer} onChange={recordAnswer}></input>
                         {answer}

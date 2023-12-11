@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react';
 import axios from 'axios'
 import './App.css';
 import GameDetails from './components/GameDetails'
+import GetAPIInfo from './components/GetAPIInfo'
 
 function App() {
   const [cats, setCats] = useState([])
@@ -46,7 +47,7 @@ function App() {
 
   if (startGame) {
     return (
-      <GameDetails
+      <GetAPIInfo
         selectedValue={selectedValue}
         selectedID={selectedID}
         startGame={startGame}
