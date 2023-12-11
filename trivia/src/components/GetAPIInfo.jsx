@@ -10,7 +10,6 @@ const GetAPIInfo = ({
     setStartGame,
     startGame
 }) => {
-    const [repos, setRepos] = useState([])
     const [loading, setLoading] = useState(true)
     const [questions, setQuestions] = useState([])
 
@@ -29,7 +28,7 @@ const GetAPIInfo = ({
                 ])
             })))
         })
-    }, [])
+    }, [selectedID])
 
     if(loading) {
         return (<h1>Loading...</h1>)
