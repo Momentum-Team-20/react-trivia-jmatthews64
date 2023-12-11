@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from 'react';
 import axios from 'axios';
 import GetAPIInfo from './GetAPIInfo';
+import he from 'he'
 
 
 const GameDetails = ({
@@ -77,7 +78,7 @@ const GameDetails = ({
                 {questions[index].answerChoices.map((answer) => (
                     <label>
                         <input type='radio' name='answer' value={answer} onChange={recordAnswer}></input>
-                        {answer}
+                        {he.decode(answer)}
                     </label>
                 ))}
             </form>
@@ -109,7 +110,7 @@ const FinalQuestion = ({index, length, setIndex, setEndQuiz, setIsAnswered}) => 
 }
 
 const Answer = ({chosenAnswer, correctAnswer}) => {
-    if(chosenAnswer === correctAnswer) {
+    if(chosenAnswer === he.decode(correctAnswer)) {
         return (<h3 className="right">You are correct!</h3>)
     } else {
         return (<h3 className='wrong'>You are incorrect</h3>)
